@@ -5,6 +5,13 @@
 #include <optional>
 #include <string>
 
+#include <vulkan/vulkan_raii.hpp>
+
+#if GLFW_VERSION_MAJOR != 3 || GLFW_VERSION_MINOR != 4
+#error "Invalid GLFW header version (requires 3.4)"
+#endif
+
+
 namespace engine {
     void os_init();
     void os_terminate();
@@ -51,6 +58,12 @@ namespace engine {
         window &operator=(window &&other) noexcept = delete;
 
         [[nodiscard]] bool should_close() const;
+
+        vk::Extent2D get_extent() const;
+
+        glm::ivec2 get_position() const;
+
+        vk::raii::SurfaceKHR create_surface(const vk::raii::Instance& instance) const;
 
       private:
         bool                      m_windowed_is_decorated;

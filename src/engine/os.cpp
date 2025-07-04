@@ -121,5 +121,24 @@ namespace engine {
         return glfwWindowShouldClose(m_window);
     }
 
+    vk::Extent2D window::get_extent() const {
+        int w, h;
+        glfwGetFramebufferSize(m_window, &w, &h);
+        return {static_cast<uint32_t>(w), static_cast<uint32_t>(h)};
+    }
 
+    glm::ivec2 window::get_position() const {
+        int x, y;
+        glfwGetWindowPos(m_window, &x, &y);
+        return {x, y};
+    }
+
+    vk::raii::SurfaceKHR window::create_surface(const vk::raii::Instance &instance) const {
+        VkSurfaceKHR surface;
+        if (glfwCreateWindowSurface(*instance, m_window, nullptr, &surface) != VK_SUCCESS) {
+            throw std::runtime_error("Failed to create window surface");
+        }
+
+        return vk::raii::SurfaceKHR(instance, surface, nullptr);
+    }
 } // namespace engine

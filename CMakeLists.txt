@@ -15,7 +15,9 @@ add_executable(gaming ${GAMING_SOURCES}
         src/engine/os.cpp
         src/engine/os.hpp
         src/engine/logging.hpp
-        src/engine/logging.cpp)
+        src/engine/logging.cpp
+        src/engine/render/render_device.cpp
+        src/engine/render/render_device.hpp)
 target_include_directories(gaming PRIVATE src/)
 target_link_libraries(gaming PRIVATE glfw vulkan glm::glm spdlog::spdlog)
 target_compile_definitions(gaming PRIVATE GLFW_INCLUDE_NONE GLFW_INCLUDE_VULKAN GLM_ENABLE_EXPERIMENTAL VULKAN_HPP_DISPATCH_LOADER_DYNAMIC=1)
