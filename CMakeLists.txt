@@ -1,14 +1,16 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 4.1)
 project(gaming_engine LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 include(FetchContent)
-FetchContent_Declare(glm GIT_REPOSITORY https://github.com/g-truc/glm.git GIT_TAG 1.0.1)
-FetchContent_Declare(spdlog GIT_REPOSITORY https://github.com/gabime/spdlog.git GIT_TAG v1.15.3)
+
+FetchContent_Declare(glfw3 GIT_REPOSITORY https://github.com/glfw/glfw.git GIT_TAG 3.4 FIND_PACKAGE_ARGS 3.4)
+FetchContent_Declare(glm GIT_REPOSITORY https://github.com/g-truc/glm.git GIT_TAG 1.0.1 FIND_PACKAGE_ARGS 1.0.1)
+FetchContent_Declare(spdlog GIT_REPOSITORY https://github.com/gabime/spdlog.git GIT_TAG v1.15.3 FIND_PACKAGE_ARGS 1.15.3)
 set(SPDLOG_USE_STD_FORMAT ON)
-FetchContent_MakeAvailable(glm spdlog)
+FetchContent_MakeAvailable(glfw3 glm spdlog)
 
 file(GLOB_RECURSE GAMING_SOURCES CONFIGURE_DEPENDS src/*.cpp src/*.c)
 add_executable(gaming ${GAMING_SOURCES}

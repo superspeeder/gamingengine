@@ -6,8 +6,6 @@
 
 #include <map>
 #include <memory>
-#include <unordered_map>
-#include <unordered_set>
 #include <utility>
 
 namespace engine::scene {
@@ -74,10 +72,30 @@ namespace engine::scene {
             return it->second;
         }
 
+		/**
+         * @tparam T The scene object type
+         * @tparam Args
+         * @param args
+         * @return A pair [id, object]
+         */
+        template <std::derived_from<scene_object> T, typename... Args>
+        std::pair<uint64_t, std::shared_ptr<scene_object>> emplace_object(const std::string& name, Args &&...args) {
+            const auto &[it, s] = m_objects.emplace(
+                ++m_last_entity_id, scene_object::create<T>(weak_from_this(), std::forward<Args>(args)...)
+            );
+
+			m_named_objects[name] = it->first;
+            return it->second;
+        }
+
       private:
         uint64_t                                          m_last_entity_id = 0;
         std::map<uint64_t, std::shared_ptr<scene_object>> m_objects;
         std::map<uint64_t, std::shared_ptr<void>>         m_global_resources;
+
+		std::map<std::string, std::shared_ptr<scene_object>> m_named_objects;
+		std::map<std::string, std::shared_ptr<void>> m_named_resources;
+
     };
 
 } // namespace engine::scene
